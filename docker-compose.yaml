@@ -1,0 +1,30 @@
+version: '3'
+
+networks:
+  app-tier:
+   driver: bridge
+
+services:
+  project-week-9:
+    build: .
+    networks:
+      - app-tier
+    ports:
+      - '8090:8090'
+    depends_on:
+      - pgsqldb
+    volumes:
+      - "./:/project-week-11/src/app"
+  pgsqldb:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB
+    networks:
+      - app-tier
+  
